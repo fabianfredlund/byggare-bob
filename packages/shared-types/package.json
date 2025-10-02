@@ -1,0 +1,10 @@
+{
+  "name": "shared-types",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "mkdir -p dist && cp -r src/* dist/",
+    "dev": "node --watch src/index.js"
+  }
+}

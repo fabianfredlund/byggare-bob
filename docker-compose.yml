@@ -1,0 +1,61 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./infra/docker/postgres-init:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:7
+    ports:
+      - '6379:6379'
+  nats:
+    image: nats:2
+    command: ['-js']
+    ports:
+      - '4222:4222'
+      - '8222:8222'
+  api-gateway:
+    build: ./apps/api-gateway
+    environment:
+      - PORT=8080
+      - JWT_SECRET=devsecret
+    ports:
+      - '8080:8080'
+    depends_on: [postgres, redis, nats]
+  crm-service:
+    build: ./services/crm-service
+    environment:
+      - PORT=3001
+    ports:
+      - '3001:3001'
+    depends_on: [postgres]
+  voice-ai-service:
+    build: ./services/voice-ai-service
+    environment:
+      - PORT=3002
+    ports:
+      - '3002:3002'
+    depends_on: [api-gateway]
+  scheduling-service:
+    build: ./services/scheduling-service
+    environment:
+      - PORT=3003
+    ports:
+      - '3003:3003'
+  invoicing-service:
+    build: ./services/invoicing-service
+    environment:
+      - PORT=3004
+    ports:
+      - '3004:3004'
+  notification-service:
+    build: ./services/notification-service
+    environment:
+      - PORT=3005
+    ports:
+      - '3005:3005'
+

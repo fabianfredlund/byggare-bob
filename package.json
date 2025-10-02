@@ -1,0 +1,14 @@
+{
+  "name": "byggare-bob",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "echo 'Use service-level dev scripts'",
+    "start": "echo 'Use docker-compose up'"
+  }
+}
